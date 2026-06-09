@@ -1,0 +1,42 @@
+{% extends "base.html" %}
+{% block title %}User Dashboard{% endblock %}
+{% block content %}
+<h2>Welcome {{ user.username }}</h2>
+{% if active_reservation %}
+    <h4>Your Active Reservation</h4>
+    <p>Parking Lot: {{ active_reservation.parking_spot.parking_lot.name }}</p>
+    <p>Spot Number: {{ active_reservation.parking_spot.spot_number }}</p>
+    <p>Parked Since: {{ active_reservation.parking_timestamp.strftime('%Y-%m-%d %H:%M:%S') }}</p>
+    <form method="POST" action="{{ url_for('release_spot', reservation_id=active_reservation.id) }}" onsubmit="return confirm('Release this parking spot?');">
+        <button type="submit" class="btn btn-danger">Release Spot</button>
+    </form>
+{% else %}
+    <p>You do not have an active parking spot reserved.</p>
+    <a href="{{ url_for('book_spot') }}" class="btn btn-primary">Book a Parking Spot</a>
+{% endif %}
+<h4 class="mt-5">Past Reservations</h4>
+<table class="table table-striped">
+    <thead>
+    <tr>
+        <th>Parking Lot</th>
+        <th>Spot Number</th>
+        <th>Start Time</th>
+        <th>End Time</th>
+        <th>Cost (₹)</th>
+    </tr>
+    </thead>
+    <tbody>
+    {% for reservation in past_reservations %}
+        <tr>
+            <td>{{ reservation.parking_spot.parking_lot.name }}</td>
+            <td>{{ reservation.parking_spot.spot_number }}</td>
+            <td>{{ reservation.parking_timestamp.strftime('%Y-%m-%d %H:%M:%S') }}</td>
+            <td>{{ reservation.leaving_timestamp.strftime('%Y-%m-%d %H:%M:%S') if reservation.leaving_timestamp else '-' }}</td>
+            <td>{{ reservation.parking_cost if reservation.parking_cost else '-' }}</td>
+        </tr>
+    {% else %}
+        <tr><td colspan="5">No past reservations found.</td></tr>
+    {% endfor %}
+    </tbody>
+</table>
+{% endblock %}

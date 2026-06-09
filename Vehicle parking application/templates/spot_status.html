@@ -1,0 +1,54 @@
+{% extends "base.html" %}
+{% block title %}Parking Spots Status - {{ lot.name }}{% endblock %}
+{% block content %}
+<h2>Parking Spots Status for {{ lot.name }}</h2>
+<table class="table table-bordered">
+    <thead>
+    <tr>
+        <th>Spot Number</th>
+        <th>Status</th>
+        <th>User (If occupied)</th>
+        <th>Parking Timestamp</th>
+        <th>Leaving Timestamp</th>
+    </tr>
+    </thead>
+    <tbody>
+    {% for spot in spots %}
+    <tr>
+        <td>{{ spot.spot_number }}</td>
+        <td>
+            {% if spot.status == 'A' %}
+                <span class="badge bg-success">Available</span>
+            {% else %}
+                <span class="badge bg-danger">Occupied</span>
+            {% endif %}
+        </td>
+        <td>
+            {% if spot.status == 'O' and spot.reservation %}
+                {{ spot.reservation.user.username }}
+            {% else %}
+                -
+            {% endif %}
+        </td>
+        <td>
+            {% if spot.status == 'O' and spot.reservation %}
+                {{ spot.reservation.parking_timestamp.strftime('%Y-%m-%d %H:%M:%S') }}
+            {% else %}
+                -
+            {% endif %}
+        </td>
+        <td>
+            {% if spot.status == 'O' and spot.reservation and spot.reservation.leaving_timestamp %}
+                {{ spot.reservation.leaving_timestamp.strftime('%Y-%m-%d %H:%M:%S') }}
+            {% else %}
+                -
+            {% endif %}
+        </td>
+    </tr>
+    {% else %}
+     <tr><td colspan="5">No spots found for this lot.</td></tr>
+    {% endfor %}
+    </tbody>
+</table>
+<a href="{{ url_for('admin_dashboard') }}" class="btn btn-secondary">Back to Dashboard</a>
+{% endblock %}

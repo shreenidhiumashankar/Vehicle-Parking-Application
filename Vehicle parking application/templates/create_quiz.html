@@ -1,0 +1,97 @@
+{% extends "base.html" %}
+{% block content %}
+<style>
+    h2, h3 {
+        color: #2c3e50;
+        margin-bottom: 15px;
+    }
+    .form-container {
+        background-color: white;
+        padding: 20px;
+        border-radius: 8px;
+        box-shadow: 0 2px 5px rgba(0,0,0,0.1);
+        margin-bottom: 20px;
+        max-width: 600px;
+    }
+    .form-container label {
+        display: block;
+        font-weight: bold;
+        margin-bottom: 5px;
+        color: #2c3e50;
+    }
+    .form-container input[type="text"],
+    .form-container input[type="number"] {
+        width: 100%;
+        padding: 10px;
+        border: 1px solid #ddd;
+        border-radius: 4px;
+        font-size: 16px;
+        margin-bottom: 15px;
+        box-sizing: border-box;
+    }
+    .form-container input[type="submit"] {
+        background-color: #28a745;
+        color: white;
+        padding: 10px 20px;
+        border: none;
+        border-radius: 4px;
+        font-size: 16px;
+        cursor: pointer;
+        transition: background-color 0.2s;
+    }
+    .form-container input[type="submit"]:hover {
+        background-color: #218838;
+    }
+    @media screen and (max-width: 768px) {
+        h2 {
+            font-size: 24px;
+        }
+        h3 {
+            font-size: 18px;
+        }
+        .form-container {
+            padding: 15px;
+        }
+        .form-container input[type="text"],
+        .form-container input[type="number"],
+        .form-container input[type="submit"] {
+            font-size: 14px;
+            padding: 8px;
+        }
+    }
+</style>
+
+<h2>Create Quiz</h2>
+<h3>Topic: {{ topic.name }} (Subject: {{ topic.subject.name }})</h3>
+<div class="form-container">
+    <form method="POST">
+        <p>
+            <label for="question">Question:</label>
+            <input type="text" id="question" name="question" required>
+        </p>
+        <p>
+            <label for="option1">Option 1:</label>
+            <input type="text" id="option1" name="option1" required>
+        </p>
+        <p>
+            <label for="option2">Option 2:</label>
+            <input type="text" id="option2" name="option2" required>
+        </p>
+        <p>
+            <label for="option3">Option 3:</label>
+            <input type="text" id="option3" name="option3" required>
+        </p>
+        <p>
+            <label for="option4">Option 4:</label>
+            <input type="text" id="option4" name="option4" required>
+        </p>
+        <p>
+            <label for="correct_answer">Correct Answer (1-4):</label>
+            <input type="number" id="correct_answer" name="correct_answer" min="1" max="4" required>
+        </p>
+        <p>
+            <input type="submit" value="Create Quiz">
+        </p>
+    </form>
+</div>
+{% endblock %}

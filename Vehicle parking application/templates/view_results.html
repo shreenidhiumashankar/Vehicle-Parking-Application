@@ -1,0 +1,124 @@
+{% extends "base.html" %}
+{% block content %}
+<style>
+    h2 {
+        color: #2c3e50;
+        margin-bottom: 15px;
+    }
+    .table-container {
+        background-color: white;
+        padding: 20px;
+        border-radius: 8px;
+        box-shadow: 0 2px 5px rgba(0,0,0,0.1);
+        margin-bottom: 20px;
+        max-width: 1000px;
+    }
+    table {
+        width: 100%;
+        border-collapse: collapse;
+        font-size: 16px;
+        color: #2c3e50;
+    }
+    th, td {
+        padding: 10px;
+        text-align: left;
+        border: 1px solid #ddd;
+    }
+    th {
+        background-color: #f8f9fa;
+        font-weight: bold;
+    }
+    tr:hover {
+        background-color: #f1f3f5;
+    }
+    td.correct {
+        color: #28a745;
+        font-weight: bold;
+    }
+    td.incorrect {
+        color: #dc3545;
+        font-weight: bold;
+    }
+    @media screen and (max-width: 768px) {
+        h2 {
+            font-size: 24px;
+        }
+        .table-container {
+            padding: 15px;
+        }
+        table {
+            font-size: 14px;
+        }
+        th, td {
+            padding: 8px;
+        }
+    }
+    @media screen and (max-width: 480px) {
+        .table-container {
+            padding: 10px;
+        }
+        table {
+            display: block;
+            overflow-x: auto;
+            font-size: 13px;
+        }
+        th, td {
+            padding: 8px;
+            display: block;
+            width: 100%;
+            text-align: left;
+            border: none;
+            border-bottom: 1px solid #ddd;
+        }
+        th {
+            display: none;
+        }
+        tr {
+            display: block;
+            margin-bottom: 10px;
+            border: 1px solid #ddd;
+            border-radius: 4px;
+        }
+        td:before {
+            content: attr(data-label);
+            font-weight: bold;
+            color: #2c3e50;
+            display: block;
+            margin-bottom: 5px;
+        }
+        td[data-label="Student"]:before { content: "Student: "; }
+        td[data-label="Registration Number"]:before { content: "Reg. Number: "; }
+        td[data-label="Subject"]:before { content: "Subject: "; }
+        td[data-label="Topic"]:before { content: "Topic: "; }
+        td[data-label="Question"]:before { content: "Question: "; }
+        td[data-label="Selected Answer"]:before { content: "Selected Answer: "; }
+        td[data-label="Result"]:before { content: "Result: "; }
+    }
+</style>
+
+<h2>Quiz Results</h2>
+<div class="table-container">
+    <table>
+        <tr>
+            <th>Student</th>
+            <th>Registration Number</th>
+            <th>Subject</th>
+            <th>Topic</th>
+            <th>Question</th>
+            <th>Selected Answer</th>
+            <th>Result</th>
+        </tr>
+        {% for submission in submissions %}
+        <tr>
+            <td data-label="Student">{{ submission.user.name }}</td>
+            <td data-label="Registration Number">{{ submission.user.reg_number }}</td>
+            <td data-label="Subject">{{ submission.quiz.topic.subject.name }}</td>
+            <td data-label="Topic">{{ submission.quiz.topic.name }}</td>
+            <td data-label="Question">{{ submission.quiz.question }}</td>
+            <td data-label="Selected Answer">{{ submission.quiz['option' ~ submission.selected_answer] }}</td>
+            <td data-label="Result" class="{% if submission.is_correct %}correct{% else %}incorrect{% endif %}">{{ 'Correct' if submission.is_correct else 'Incorrect' }}</td>
+        </tr>
+        {% endfor %}
+    </table>
+</div>
+{% endblock %}

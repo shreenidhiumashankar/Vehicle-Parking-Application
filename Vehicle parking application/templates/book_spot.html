@@ -1,0 +1,18 @@
+{% extends "base.html" %}
+{% block title %}Book Parking Spot{% endblock %}
+{% block content %}
+<h2>Book a Parking Spot</h2>
+<form method="POST">
+    <div class="mb-3">
+        <label for="lot_id" class="form-label">Select Parking Lot</label>
+        <select name="lot_id" id="lot_id" class="form-select" required>
+            <option value="" disabled selected>Select Parking Lot</option>
+            {% for lot in parking_lots %}
+                <option value="{{ lot.id }}">{{ lot.name }} (₹{{ lot.price_per_hour }}/hr)</option>
+            {% endfor %}
+        </select>
+    </div>
+    <button type="submit" class="btn btn-success">Book Spot</button>
+    <a href="{{ url_for('user_dashboard') }}" class="btn btn-secondary">Cancel</a>
+</form>
+{% endblock %}
